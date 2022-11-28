@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Hello, world!</title>
+</head>
+<body>
+<div th:insert="navigation"/>
+<div class="container mt-5">
+    <form action="#" th:action="@{/tasks}" th:object="${searchModel}" method="post">
+        <div class="mb-3">
+            <div class="d-flex flex-row">
+                <input type="text" class="form-control" th:field="*{title}" />
+                <input type="submit" value="Поиск" />
+            </div>
+        </div>
+        <p>точный поиск: <input type="checkbox" th:field="*{high}" /></p>
+
+    </form>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="rows"> Title </th>
+            <th class="rows"> Deadline </th>
+            <th class="rows"> Action </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${tasks}">
+            <td class="rows"><span th:text="${item.title}"> Name </span></td>
+            <td class="rows"><span th:text="${item.deadline}"> Name </span></td>
+            <td class="rows">
+                <form action="#" th:action="@{/task/update/{id}(id=${item.id})}" th:object="${item}" method="get">
+                    <input type="submit" value="Details">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body></html>

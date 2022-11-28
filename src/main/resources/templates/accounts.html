@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="navigation"/>
+
+<div class="container mt-5">
+    <form action="#" th:action="@{/accounts}" th:object="${searchModel}" method="post">
+        <div class="mb-3">
+            <div class="d-flex flex-row">
+                <input type="text" class="form-control" th:field="*{title}" />
+                <input type="submit" value="Поиск" />
+            </div>
+        </div>
+        <p>точный поиск: <input type="checkbox" th:field="*{high}" /></p>
+
+    </form>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="rows"> bankName </th>
+            <th class="rows"> number </th>
+            <th class="rows"> Action </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${accounts}">
+            <td class="rows"><span th:text="${item.bankName}"> bankName </span></td>
+            <td class="rows"><span th:text="${item.number}"> number </span></td>
+            <td class="rows">
+                <form action="#" th:action="@{/account/update/{id}(id=${item.id})}" th:object="${account}" method="get">
+                    <input type="submit" value="Details">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

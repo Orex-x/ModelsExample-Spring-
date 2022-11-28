@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="navigation"/>
+
+<div class="container mt-5">
+    <!-- IF-->
+    <div th:if="${isAddAction}">
+        <form action="#" th:action="@{/addAccount}" th:object="${account}" method="post">
+            <p>number: <input type="text" th:field="*{number}" /></p>
+            <p th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></p>
+            <p>bankName: <input type="text" th:field="*{bankName}" /></p>
+            <p th:if="${#fields.hasErrors('bankName')}" th:errors="*{bankName}"></p>
+            <p><input type="submit" value="добавить" /></p>
+        </form>
+    </div>
+    <!-- ELSE -->
+    <div th:unless="${isAddAction}">
+        <form action="#" th:action="@{/account/update/{id}(id=${account.id})}" th:object="${account}" method="post">
+            <p>number: <input type="text" th:field="*{number}" /></p>
+            <p th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></p>
+            <p>bankName: <input type="text" th:field="*{bankName}" /></p>
+            <p th:if="${#fields.hasErrors('bankName')}" th:errors="*{bankName}"></p>
+            <p><input type="submit" value="изменить" /></p>
+        </form>
+        <form action="#" th:action="@{/account/delete/{id}(id=${account.id})}" th:object="${account}" method="get">
+            <p><input type="submit" value="удалить" /></p>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

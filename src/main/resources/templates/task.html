@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="navigation"/>
+
+<div class="container mt-5">
+    <!-- IF-->
+    <div th:if="${isAddAction}">
+        <form action="#" th:action="@{/addTask}" th:object="${task}" method="post">
+            <p>title: <input type="text" th:field="*{title}" /></p>
+            <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+            <p>deadline: <input type="date" th:field="*{deadline}" /></p>
+            <p th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}"></p>
+            <p><input type="submit" value="добавить" /></p>
+        </form>
+    </div>
+    <!-- ELSE -->
+    <div th:unless="${isAddAction}">
+        <form action="#" th:action="@{/task/update/{id}(id=${task.id})}" th:object="${task}" method="post">
+            <p>title: <input type="text" th:field="*{title}" /></p>
+            <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+            <p>deadline: <input type="date" th:field="*{deadline}" /></p>
+            <p th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}"></p>
+            <p><input type="submit" value="изменить" /></p>
+        </form>
+        <form action="#" th:action="@{/task/delete/{id}(id=${task.id})}" th:object="${task}" method="get">
+            <p><input type="submit" value="удалить" /></p>
+        </form>
+    </div>
+</div>
+</body>
+</html>
