@@ -12,6 +12,7 @@ import com.example.demo.services.TaskService;
 import com.example.demo.viewModels.EmployeeTaskViewModel;
 import com.example.demo.viewModels.SearchModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Controller
+
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
@@ -31,6 +33,32 @@ public class EmployeeController {
     private AccountService accountService;
     @Autowired
     private TaskService taskService;
+
+
+    @GetMapping("/registration")
+    public String registration(Model model){
+        model.addAttribute("employee", new Employee());
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String registration(@ModelAttribute @Valid Employee employee, BindingResult result, Model model){
+        if (result.hasErrors()) {
+            model.addAttribute("employee", employee);
+            return "registration";
+        }
+
+        employee.setActive(true);
+        employee.setRole(roleService.getByName("USER"));
+
+        if(!employeeService.add(employee)){
+            model.addAttribute("employee", employee);
+            model.addAttribute("error", "Пользователь с таким именем уже существует");
+            return "registration";
+        }
+
+        return "login";
+    }
 
     @GetMapping("/addEmployee")
     public String addEmployee(Model model){
@@ -45,8 +73,6 @@ public class EmployeeController {
 
     @PostMapping("/addEmployee")
     public String addEmployee(@ModelAttribute @Valid Employee employee, BindingResult result, Model model){
-
-
         if (result.hasErrors()) {
             model.addAttribute("employee", employee);
             List<Role> roles = StreamSupport.stream(roleService.getAll().spliterator(), false).toList();
@@ -56,11 +82,19 @@ public class EmployeeController {
             model.addAttribute("isAddAction", true);
             return "employee";
         }
-        employeeService.add(employee);
-        List<Employee> list = StreamSupport.stream(employeeService.getAll().spliterator(), false).toList();
-        model.addAttribute("employees", list);
-        model.addAttribute("searchModel", new SearchModel());
-        return "employees";
+        employee.setActive(true);
+        if(!employeeService.add(employee)){
+            model.addAttribute("employee", employee);
+            List<Role> roles = StreamSupport.stream(roleService.getAll().spliterator(), false).toList();
+            List<Account> accounts = StreamSupport.stream(accountService.getAll().spliterator(), false).toList();
+            model.addAttribute("roles", roles);
+            model.addAttribute("accounts", accounts);
+            model.addAttribute("isAddAction", true);
+            model.addAttribute("error", "Пользователь с таким именем уже существует");
+            return "employee";
+        }
+
+        return employees(model);
     }
 
     @GetMapping("/employee/update/{id}")
@@ -91,7 +125,18 @@ public class EmployeeController {
             return "employee";
         }
 
-        employeeService.add(id, employee);
+
+
+        if(!employeeService.add(id, employee)){
+            model.addAttribute("employee", employee);
+            List<Role> roles = StreamSupport.stream(roleService.getAll().spliterator(), false).toList();
+            List<Account> accounts = StreamSupport.stream(accountService.getAll().spliterator(), false).toList();
+            model.addAttribute("roles", roles);
+            model.addAttribute("accounts", accounts);
+            model.addAttribute("isAddAction", true);
+            model.addAttribute("error", "Пользователь с таким именем уже существует");
+            return "employee";
+        }
 
         List<Employee> list = StreamSupport.stream(employeeService.getAll().spliterator(), false).toList();
         model.addAttribute("employees", list);

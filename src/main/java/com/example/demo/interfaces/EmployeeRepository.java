@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
     Iterable<Employee> getAllByName(String name);
+
+    Employee getEmployeeByName(String name);
 }

@@ -18,8 +18,12 @@ public class Employee {
     private Long id;
 
     @NotBlank
-    @Email
     private String name;
+
+
+    private String password;
+
+    private boolean active;
 
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -51,7 +55,7 @@ public class Employee {
     private Set<Task> tasks = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id")
     private Account account;
 
     public Employee() {
@@ -64,6 +68,22 @@ public class Employee {
         this.amount = amount;
         this.role = role;
         this.account = account;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Set<Task> getTasks() {

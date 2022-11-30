@@ -4,6 +4,7 @@ import com.example.demo.models.Task;
 import com.example.demo.services.TaskService;
 import com.example.demo.viewModels.SearchModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Controller
+@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class TaskController {
 
     @Autowired

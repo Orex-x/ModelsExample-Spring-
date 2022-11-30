@@ -28,6 +28,10 @@ public class RoleService {
         return roleRepository.getAllByName(name);
     }
 
+    public Role getByName(String name){
+        return roleRepository.findRoleByName(name);
+    }
+
     public Iterable<Role> getAllByNameExists(String name){
         Iterable<Role> all  = getAll();
         List<Role> buffer = new ArrayList<>();

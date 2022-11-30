@@ -40,8 +40,8 @@
       <td class="rows"><span th:text="${item.balance}"> balance </span></td>
       <td class="rows"><span th:text="${item.dateOfBirth}"> dateOfBirth </span></td>
       <td class="rows"><span th:text="${item.role.name}"> Role </span></td>
-      <td class="rows"><span th:text="${item.account.number}"> Account </span></td>
-
+      <td class="rows" th:if="${item.account != null}"><span th:text="${item.account.number}"> Account </span></td>
+      <td class="rows" th:if="${item.account == null}"><span text="null"> Account </span></td>
       <td class="rows">
         <form action="#" th:action="@{/employee/tasks/{id}(id=${item.id})}" th:object="${item}" method="get">
           <input type="submit" value="open">

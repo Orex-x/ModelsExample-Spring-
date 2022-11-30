@@ -43,12 +43,18 @@ public class EmployeeService {
         return buffer;
     }
 
-    public void add(Employee employee){
+    public boolean add(Employee employee){
+        var findEmployee = employeeRepository.getEmployeeByName(employee.getName());
+        if(findEmployee != null) return false;
         employeeRepository.save(employee);
+        return true;
     }
 
-    public void add(Long id, Employee employee){
+    public boolean add(Long id, Employee employee){
+        var findEmployee = employeeRepository.getEmployeeByName(employee.getName());
         Employee u = get(id).get();
+        if(findEmployee != null && !employee.getName().equals(u.getName())) return false;
+
         u.setTasks(employee.getTasks());
         u.setAccount(employee.getAccount());
         u.setAmount(employee.getAmount());
@@ -57,6 +63,7 @@ public class EmployeeService {
         u.setDateOfBirth(employee.getDateOfBirth());
         u.setRole(employee.getRole());
         employeeRepository.save(u);
+        return true;
     }
 
     public void addTask(Long id, Task task){

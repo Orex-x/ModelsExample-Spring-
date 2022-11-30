@@ -18,6 +18,8 @@
             <p th:if="${#fields.hasErrors('balance')}" th:errors="*{balance}"></p>
             <p>amount: <input type="number" th:field="*{amount}" /></p>
             <p th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></p>
+            <p>password: <input type="text" th:field="*{password}" /></p>
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
             <p>dateOfBirth: <input type="date" th:field="*{dateOfBirth}" /></p>
             <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></p>
             <p>role:  <select th:field="*{role}">
